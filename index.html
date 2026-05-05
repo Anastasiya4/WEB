@@ -1,203 +1,78 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Трансформаторна підстанція 110/35/10 кВ</title>
+  <meta charset="UTF-8">
+  <title>Моніторинг СЕС</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Власні стилі -->
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+<div class="container mt-4">
+  <h1>Моніторинг сонячної електростанції (1 МВт)</h1>
 
-<!-- Hero -->
-<header class="hero-section d-flex align-items-center text-center text-white">
-  <!-- Навігація -->
-<nav class="navbar navbar-expand-lg custom-navbar fixed-top">
-    <div class="container div-space">
-        <a class="navbar-brand fw-bold" href="#">Substation</a>
+  <!-- КАРТКИ -->
+  <div class="row">
+    <div class="col-md-3"><div class="card-box"><h5>Потужність</h5><h3 id="power">--</h3></div></div>
+    <div class="col-md-3"><div class="card-box"><h5>Добова генерація</h5><h3 id="daily">--</h3></div></div>
+    <div class="col-md-3"><div class="card-box"><h5>Місячна генерація</h5><h3 id="monthly">--</h3></div></div>
+    <div class="col-md-3"><div class="card-box"><h5>Ефективність</h5><h3 id="eff">--</h3></div></div>
+  </div>
 
-        <div class="nav-menu">
-        <button class="navbar-toggler bg-warning" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#menu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+  <!-- ПАРАМЕТРИ -->
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <div class="info-box">
+        <p><b>Освітленість:</b> <span id="irr">--</span></p>
+        <p><b>Температура панелей:</b> <span id="temp">--</span></p>
+      </div>
+    </div>
+  </div>
 
-        <div class="collapse navbar-collapse" id="menu">
-            <ul class="navbar-nav ms-auto text-center">
-                <li class="nav-item"><a class="nav-link" href="#about">Опис</a></li>
-                <li class="nav-item"><a class="nav-link" href="#specs">Характеристики</a></li>
-                <li class="nav-item"><a class="nav-link" href="#location">Локація</a></li>
-            </ul>
+  <!-- ГРАФІК + PIE -->
+  <div class="row mt-4">
+
+    <!-- LINE -->
+    <div class="col-md-6">
+      <div class="chart-card">
+        <canvas id="lineChart"></canvas>
+      </div>
+    </div>
+
+    <!-- PIE -->
+    <div class="col-md-6">
+      <div class="chart-card d-flex align-items-center">
+
+        <div id="pieLegend" class="pie-legend"></div>
+
+        <div class="pie-chart-wrapper">
+          <canvas id="pieChart"></canvas>
         </div>
 
-        <button id="themeToggle" class="btn btn-sm ms-lg-3 theme-btn">
-              🌙
-        </button>
-        </div>
-
+      </div>
     </div>
-</nav>
-  
-    <div class="container">
-        <h1 class="hero-title">Трансформаторна підстанція 110/35/10 кВ</h1>
-        <p class="lead">Надійне енергозабезпечення міської інфраструктури</p>
-        <a href="#about" class="btn custom-btn mt-3">Детальніше</a>
+
+  </div>
+
+  <!-- HEATMAP -->
+  <div class="mt-4">
+    <h4>Heat-map ефективності</h4>
+    <div id="heatmap"></div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="mt-4">
+    <h4>Історія</h4>
+    <div class="table-container">
+      <div id="table"></div>
     </div>
-</header>
+  </div>
 
-<!-- Опис -->
-<section id="about" class="section-padding">
-    <div class="container">
-        <h2 class="section-title">Опис об’єкта</h2>
-
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-12 mb-4">
-                <p>
-                    Трансформаторна підстанція 110/35/10 кВ призначена для
-                    прийому електроенергії високої напруги 110 кВ,
-                    її трансформації та подальшого розподілу споживачам
-                    напругою 35 кВ та 10 кВ.
-                </p>
-                <p>
-                    Підстанція забезпечує електропостачання житлових районів,
-                    промислових об'єктів та соціальної інфраструктури міста Києва.
-                </p>
-            </div>
-
-            <div class="col-lg-6 col-md-12 text-center">
-                <img src="images/trasstation.jpg"
-                     alt="Підстанція" 
-                     class="img-fluid rounded shadow adaptive-img">
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Характеристики -->
-<section id="specs" class="section-dark">
-    <div class="container">
-        <h2 class="section-title text-white">Технічні характеристики</h2>
-
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6 col-12">
-                <div class="card custom-card h-100">
-                    <div class="card-body text-center">
-                        <h5>Тип</h5>
-                        <p>Трансформаторна підстанція</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 col-12">
-                <div class="card custom-card h-100">
-                    <div class="card-body text-center">
-                        <h5>Потужність</h5>
-                        <p>63 МВА</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 col-12">
-                <div class="card custom-card h-100">
-                    <div class="card-body text-center">
-                        <h5>Напруга</h5>
-                        <p>110/35/10 кВ</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 col-12">
-                <div class="card custom-card h-100">
-                    <div class="card-body text-center">
-                        <h5>Локація</h5>
-                        <p>м. Київ, вул. Енергетична, 15</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Таблиця параметрів -->
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover bg-white">
-                <thead>
-                    <tr>
-                        <th>Параметр</th>
-                        <th>Значення</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Тип</td>
-                        <td>Трансформаторна підстанція</td>
-                    </tr>
-                    <tr>
-                        <td>Номінальна потужність</td>
-                        <td>63 МВА</td>
-                    </tr>
-                    <tr>
-                        <td>Вхідна напруга</td>
-                        <td>110 кВ</td>
-                    </tr>
-                    <tr>
-                        <td>Вихідна напруга</td>
-                        <td>35 кВ / 10 кВ</td>
-                    </tr>
-                    <tr>
-                        <td>Місцезнаходження</td>
-                        <td>м. Київ, вул. Енергетична, 15</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
 
-<!-- Локація -->
-<section id="location" class="section-padding">
-    <div class="container">
-        <h2 class="section-title">Розташування</h2>
-
-        <div class="map-wrapper">
-            <iframe 
-                src="https://www.google.com/maps?q=Київ,+вул.+Енергетична,+15&output=embed"
-                allowfullscreen=""
-                loading="lazy">
-            </iframe>
-        </div>
-
-        <p class="location-position">м. Київ, вул. Енергетична, 15</p>
-
-    </div>
-</section>
-
-<!-- Футер -->
-<footer class="footer text-center">
-    <p>© 2026 Інформаційний портал трансформаторної підстанції</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-const toggleBtn = document.getElementById("themeToggle");
-
-toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-theme");
-
-    if(document.body.classList.contains("dark-theme")) {
-        toggleBtn.textContent = "☀️";
-    } else {
-        toggleBtn.textContent = "🌙";
-    }
-});
-</script>
-
+<script type="module" src="app.js"></script>
 </body>
 </html>
